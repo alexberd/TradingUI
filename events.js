@@ -28,3 +28,23 @@ function moveStepFloat()
     return 10.0/columnWidth;
     
 }
+
+
+function keyPressedLeftRight() {
+    if (keyCode === RIGHT_ARROW) {
+      forward();
+    } else if (keyCode === LEFT_ARROW) {
+      backwards();
+    }
+  }
+  
+  function keyTyped() {
+    if (key === "-") {
+      columnWidth/=2;
+    }
+    else if (key === '=') {
+      columnWidth*=2;
+    }
+  }
+  
+  
