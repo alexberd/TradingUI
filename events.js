@@ -1,9 +1,9 @@
 let mouseBeforePressedX=0;
-let columnsStartBeforePressed=0;
+let rowsStartBeforePressed=0;
 function mousePressed() {
     mouseBeforePressedX = mouseX;
-    columnsStartBeforePressed=columnsStart;
-    print("columnsStartBeforePressed: "+columnsStartBeforePressed);
+    rowsStartBeforePressed=rowsStart;
+    print("rowsStartBeforePressed: "+rowsStartBeforePressed);
 }
 
 function mouseDragged()
@@ -11,11 +11,11 @@ function mouseDragged()
     print("def:"+(mouseBeforePressedX-mouseX)+"/"+columnWidth);
     difference = ((mouseBeforePressedX-mouseX)/columnWidth);
     print("difference "+difference);
-    newColumnStart=columnsStartBeforePressed+int(difference);
+    newrowsStart=rowsStartBeforePressed+int(difference);
     //print(difference*1.0/moveStep());
-    if (newColumnStart>0 && newColumnStart<table.getRowCount())
-       columnsStart=newColumnStart;
-    print(columnsStart);
+    if (newrowsStart>0 && newrowsStart<table.getRowCount())
+       rowsStart=newrowsStart;
+    print(rowsStart);
 }
 
 function moveStep()
@@ -25,8 +25,7 @@ function moveStep()
 function moveStepFloat()
 {
     //print("collumn width "+columnWidth);
-    return 10.0/columnWidth;
-    
+    return 10.0/columnWidth;    
 }
 
 
