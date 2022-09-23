@@ -41,9 +41,20 @@ function keyPressedLeftRight() {
   function keyTyped() {
     if (key === "-") {
       columnWidth/=2;
+      difference=selectedRow-rowsStart
+      rowsStart=int(rowsStart-difference);
+      if (rowsStart<0) rowsStart=0;
     }
     else if (key === '=') {
       columnWidth*=2;
+      //move first row to center to mouse
+      difference=selectedRow-rowsStart
+      rowsStart=int(rowsStart+difference/2);
+      // console.log("difference:"+difference);
+      // console.log("selectedRow:"+selectedRow);
+      // console.log("rowsStart:"+rowsStart);
+      // console.log("rowsStart_:"+rowsStart_);
+      // rowsStart=rowsStart_;
     }
 
     if (key === "4") {
