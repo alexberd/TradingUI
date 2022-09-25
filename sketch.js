@@ -1,9 +1,5 @@
 
 let arrayString;
-let table;
-let tableDatetime = []
-
-
 
 class Rectangle {
   constructor(name, height, width) {
@@ -17,9 +13,6 @@ radius=10
 increment=1
 
 let direction="increasing";
-let rowsStart = 1;
-//let columnsEnd = 20;
-let columnWidth = 10;
 
 function draw()
 {
@@ -72,32 +65,8 @@ function canvasDisplay()
   text("framerate: "+int(getFrameRate()/10)*10,width-100,40);
 }
 
-let pos = 25;
-function mouseWheel(event)
-{ 
-  if(event.delta>0)
-  {
-    backwards()
-  }
-  else
-  {
-    forward()    
-  }  
-}
+// let pos = 25;
 
-function backwards()
-{
-  //let size = 3*10/columnWidth;
-  if (rowsStart>moveStep())
-    rowsStart+=-moveStep();
-}
-
-function forward()
-{
-  //let size = 3*10/columnWidth;
-  if (rowsStart<table.getRowCount()-moveStep())
-      rowsStart+=moveStep();
-}
 
 
 

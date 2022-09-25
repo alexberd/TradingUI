@@ -9,6 +9,7 @@ function getQueryVariable(variable) {
     }
     console.log('Query variable %s not found', variable);
 }
+
 // function getQueryVariable(variable){ 
 //   var query = window.location.search.substring(1); 
 //   var vars = query.split("&"); 

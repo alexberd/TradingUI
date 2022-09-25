@@ -1,7 +1,19 @@
 let state_H1=true;
 let state_H4=true;
+let state_H1_new=true;
+let state_H4_new=true;
+
 let selectedRow=0;
 var datetimeStringDic = {};
+let table;
+let tableDatetime = []
+let tableNew = new p5.Table(0);
+let tableNewDic = {};
+let rowsStart = 1;
+let rowsStartDateString;
+//let columnsEnd = 20;
+let columnWidth = 10;
+
 
 function setup() {
   
@@ -178,4 +190,107 @@ function myCallbackTable(data)
   }
 
   // console.log(tableDatetime);
+  createNewTable(table);
+}
+
+function createNewTable(table)
+{
+  tableNew.addColumn("Datetime");
+  tableNew.addColumn("Open");
+  tableNew.addColumn("Close");
+  tableNew.addColumn("Low");
+  tableNew.addColumn("High");
+
+  dateMin=new Date("2100 00 00 00:00");
+  dateMax=new Date("1900 00 00 00:00");
+  for(i=0;i<table.getRowCount();i++)
+  {
+    //read and create tableDatetime
+    let date = table.get(i, 0).replace("."," ");
+    date = date.replace("."," ");
+    let time = table.get(i, 1);
+    let datetimeString = date + " " + time;
+    const datetime = new Date(datetimeString);
+    if (datetime>dateMax) dateMax=datetime;
+    if (datetime<dateMin) dateMin=datetime;
+  }
+  rowsStartDateString=dateToString(dateMin);
+
+  // const dates = [];
+  let date=dateMin;
+  while (date <= dateMax) {
+    let newRow = tableNew.addRow();
+    // date_=new Date(dateToString(date));
+    newRow.setString('Datetime', dateToString(date));
+    tableNewDic[dateToString(date)]={};
+
+    // dates.push(new Date(date));
+    // date.setDate(date.getDate() + 1);
+    date.setHours(date.getHours() + 1);
+  }
+  // console.log(tableNew);
+  // console.log(tableNewDic);
+  
+  //H1
+  for(i=0;i<table.getRowCount();i++)
+  {
+    //read and create tableDatetime
+    let date = table.get(i, 0).replace(".","-");
+    date = date.replace(".","-");
+    let time = table.get(i, 1);
+    let datetimeString = date + " " + time;
+    // tableNewDic[datetimeString+":00"]={};
+    try
+    {
+      tableNewDic[datetimeString+":00"]["Open"]=parseFloat(table.get(i,"Open"));
+      tableNewDic[datetimeString+":00"]["Close"]=parseFloat(table.get(i,"Close"));
+      tableNewDic[datetimeString+":00"]["Low"]=parseFloat(table.get(i,"Low"));
+      tableNewDic[datetimeString+":00"]["High"]=parseFloat(table.get(i,"High"));
+    }
+    catch(err) {
+      console.log(err.message);
+    }
+    // let newRow = tableNew.matchRow(new RegExp(datetimeString+":*"),"Datetime");
+
+  //   let newRow = tableNew.addRow();
+  //   newRow.setString('Datetime', datetimeString);
+    // newRow.setString('Open', table.get(i,"Open"));
+    // newRow.setString('Close', table.get(i,"Close"));
+    // newRow.setString('Low', table.get(i,"Low"));
+    // newRow.setString('High', table.get(i,"High"));
+
+  }
+
+  //H4
+  for (const [key, value] of Object.entries(tableNewDic)) {
+    date = new Date(key);
+    if(date.getHours()%4==0)
+    {
+      H4_Open = parseFloat(value['Open']);
+      H4_Low=parseFloat(value["Low"]);
+      H4_High=parseFloat(value["High"]);
+
+      for(let i=0;i<3;i++)
+      {
+        date.setHours(date.getHours() + 1);
+        dateToString_=dateToString(date);
+        if (tableNewDic[dateToString_] !== undefined)//avoid end
+        {
+          if (tableNewDic[dateToString_]["Low"]<H4_Low) H4_Low=parseFloat(tableNewDic[dateToString_]["Low"]);
+          if (tableNewDic[dateToString_]["High"]>H4_High) H4_High=parseFloat(tableNewDic[dateToString_]["High"]);
+        }
+      }
+      if (tableNewDic[dateToString_] !== undefined)//avoid end
+      {
+        value['H4_Open']= H4_Open;
+        value['H4_Low'] = H4_Low;
+        value['H4_High'] = H4_High;
+        value['H4_Close'] = parseFloat(tableNewDic[dateToString_]['Close']);
+      }
+    }
+  }
+
+
+  // console.log(tableNew);
+  // console.log(tableNewDic);
 }
