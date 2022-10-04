@@ -1,8 +1,9 @@
-let state_H1=true;
-let state_H4=true;
+let state_H1=false;
+let state_H4=false;
 let state_H1_new=true;
 let state_H4_new=true;
 
+let selectedRowFromStart=0;
 let selectedRow=0;
 var datetimeStringDic = {};
 let table;
@@ -13,27 +14,29 @@ let rowsStart = 1;
 let rowsStartDateString;
 //let columnsEnd = 20;
 let columnWidth = 10;
-
+let currentDate_;
+let currentDateStart;
+let currentDateEnd;
 
 function setup() {
-  
-  
+
+
   //GET REQUESTS
   rowsStartGet=getQueryVariable("rowsStart");
   if (rowsStartGet!=-1){
-    
+
     // rowsStart=rowsStartGet
   }
   console.log("rowsStart:"+rowsStart);
   console.log("rowsStartGet:"+rowsStartGet);
-  
+
   // location.search = queryString.stringify(rowsStart+1);
   console.log("location.search");
   console.log(location.search);
   var locationSearch = parseQuery(location.search);
   console.log(locationSearch);
   // document.location.hash = 'lookAtMeNow';
-  
+
 
   // const nextURL = 'www.google.com';
   // const nextTitle = 'My new page title';
@@ -48,7 +51,9 @@ function setup() {
 
   //READ DATA
   // textAlign(CENTER,CENTER);
-  createCanvas(1500, 700);
+  let canvas = createCanvas(1500, 700);
+  canvas.parent('sketch-container');
+
   let url = "https://raw.githubusercontent.com/alexberd/CSV-Collection/main/ExampleTradingData.csv";
   // let url = "https://raw.githubusercontent.com/alexberd/CSV-Collection/main/ExampleTradingData_min.csv";
   // let url = "https://raw.githubusercontent.com/alexberd/CSV-Collection/main/ExampleTradingData_min2.csv";
@@ -56,27 +61,27 @@ function setup() {
   // console.log(table);
   // console.log(table.getRowCount());
   // console.log(table.getColumnCount());
-  
+
   //arrayString=loadStrings(url, myCallbackArrayString);
   //arrayStrings.append("sf");
   //console.log("0");
   //console.log(arrayString.length);
-  
+
   loadTable(url, "header", myCallbackTable);
-  
-  // console.log(url);  
+
+  // console.log(url);
   // console.log(arrayStrings);
-  // console.log(arrayStrings.length);  
-  
+  // console.log(arrayStrings.length);
+
 }
-  
+
 function myCallbackArrayString(data) {
 
 // console.log(data[0])
 console.log("1");
 console.log(data);
 console.log("2");
-console.log(data.length); 
+console.log(data.length);
 
 }
 
@@ -93,10 +98,10 @@ function myCallbackTable(data)
   table.addColumn("M5"); //1
   table.addColumn("M15"); //2
   table.addColumn("M30"); //3
-  
+
   table.addColumn("H1"); //4
-  
-  
+
+
   table.addColumn("H4"); //5
   table.addColumn("H4_Open");
   table.addColumn("H4_Close");
@@ -109,7 +114,14 @@ function myCallbackTable(data)
 
   table.addColumn("datetime");
 
-  // const d = new Date(2018, 11, 24, 10, 33, 30);
+
+  createOldTable(table);
+  createNewTable(table);
+}
+
+function createOldTable(table)
+{
+// const d = new Date(2018, 11, 24, 10, 33, 30);
   // console.log(d);
   // const a = new Date('01 Jan 1970 00:00:00 GMT');
   // console.log(a);
@@ -121,8 +133,8 @@ function myCallbackTable(data)
   let H4_Close=-1;
   let H4_Low=Infinity;
   let H4_High=-Infinity;
-  
-  
+
+
   // console.log(table.columns);
   // console.log(table.getRowCount());
   for(i=0;i<table.getRowCount();i++)
@@ -133,9 +145,9 @@ function myCallbackTable(data)
     let time = table.get(i, 1);
     let datetimeString = date + " " + time;
   //   console.log(datetimeString);
-    
 
-  //   Find duplicated datetimes and remove from table 
+
+  //   Find duplicated datetimes and remove from table
     if (datetimeString in datetimeStringDic)
     {
       table.removeRow(i);
@@ -148,7 +160,7 @@ function myCallbackTable(data)
 
     const datetime = new Date(datetimeString);
     // console.log(datetime);
-    
+
     tableDatetime.push(datetime);
 
     time=table.get(i, 1).split(":");
@@ -158,17 +170,17 @@ function myCallbackTable(data)
     {
       table.set(i, 'H4', true);
       // console.log(time);
-      
+
       H4_Open=parseFloat(table.get(i, 'Open'));
       table.set(i, 'H4_Open', H4_Open);
       if(H4_Previous_i!=-1)
       {
         // console.log("H4_Previous_i"+H4_Previous_i);
         table.set(H4_Previous_i, 'H4_Close', H4_Close);
-      
+
         table.set(H4_Previous_i, 'H4_Low', H4_Low);
         table.set(H4_Previous_i, 'H4_High', H4_High);
-        
+
         // console.log("H4_Open"+H4_Open);
         // console.log("H4_Close"+H4_Close);
         // console.log("H4_Low"+H4_Low);
@@ -185,12 +197,9 @@ function myCallbackTable(data)
     if (table.get(i, 'High')>H4_High) H4_High=parseFloat(table.get(i, 'High'));
     if (table.get(i, 'Low')<H4_Low) H4_Low=parseFloat(table.get(i, 'Low'));
     H4_Close=parseFloat(table.get(i, 'Close'));
-    
+
     //
   }
-
-  // console.log(tableDatetime);
-  createNewTable(table);
 }
 
 function createNewTable(table)
@@ -215,6 +224,10 @@ function createNewTable(table)
     if (datetime<dateMin) dateMin=datetime;
   }
   rowsStartDateString=dateToString(dateMin);
+  currentDate_=new Date(rowsStartDateString);
+
+  currentDateStart=new Date(dateMin);
+  currentDateEnd=new Date(dateMax);
 
   // const dates = [];
   let date=dateMin;
@@ -230,7 +243,7 @@ function createNewTable(table)
   }
   // console.log(tableNew);
   // console.log(tableNewDic);
-  
+
   //H1
   for(i=0;i<table.getRowCount();i++)
   {
