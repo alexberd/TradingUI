@@ -44,7 +44,7 @@ function mouseDragged()
     if(currentDateStart<currentDate_Temp)
       currentDate_=currentDate_Temp
   }
-  
+  canvasDisplay()
 }
 
 function moveStep()
@@ -128,18 +128,19 @@ function keyTyped() {
       state_H4_new=true;
     }
   }
+  canvasDisplay()
 }
   
 function mouseWheel(event)
-{ 
+{
   if(event.delta>0)
   {
     backwards()
   }
   else
   {
-    forward()    
-  }  
+    forward()
+  }
 }
 
 function keyPressedLeftRight() {
@@ -174,6 +175,7 @@ function backwards()
 
   //   backwardsOrForwardIsPressed=false;
   // }
+  canvasDisplay()
 }
 
 function forward()
@@ -194,9 +196,10 @@ function forward()
     
     if(currentDateEnd>currentDate_Temp)
     currentDate_=currentDate_Temp
-
+    
   //   backwardsOrForwardIsPressed=false;
   // }
+  canvasDisplay()
 }
 
 function avoidWeekendsForwards(date)
@@ -208,4 +211,10 @@ function avoidWeekendsBackwards(date)
 {
   while (date.getDay()==6 || date.getDay()==0)
     date.setHours(date.getHours() - 1);
+}
+function mouseMoved() {
+  canvasDisplay()
+  // candlestickDisplayRun=true;
+  // background(220);
+  // candlestickDisplay();
 }

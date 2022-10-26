@@ -73,6 +73,7 @@ function setup() {
   // console.log(arrayStrings);
   // console.log(arrayStrings.length);
 
+  
 }
 
 function myCallbackArrayString(data) {
@@ -117,6 +118,8 @@ function myCallbackTable(data)
 
   createOldTable(table);
   createNewTable(table);
+  
+  canvasDisplay()
 }
 
 function createOldTable(table)

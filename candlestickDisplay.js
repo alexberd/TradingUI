@@ -9,8 +9,7 @@ function candlestickDisplay() {
 
     //identify chart low high
     let valueMax = -Infinity;
-    let valueMin = Infinity;
-    
+    let valueMin = Infinity;    
     for (i = rowsStart; i < rowsScreenEndFromStart + 1 && i < table.getRowCount() ; i++) {
       // console.log("i: "+i);
       let H1_High = table.get(i, 3);
@@ -98,8 +97,7 @@ function candlestickDisplay() {
         }
       }
       iteration=iteration+1;
-      currentDate.setHours(currentDate.getHours() + 1);
-      
+      currentDate.setHours(currentDate.getHours() + 1);      
     }
 
     //new Candlesticks - H4 - Managed by Date
@@ -134,10 +132,10 @@ function candlestickDisplay() {
             let H4_Close = tableNewDic[dateToString_]["H4_Close"];
             let H4_High = tableNewDic[dateToString_]["H4_High"];
             let H4_Low =  tableNewDic[dateToString_]["H4_Low"];
-            let H4_Open_y = map(H4_Open, valueMinByDate, valueMax, 0, -height + 40);
-            let H4_Close_y = map(H4_Close, valueMinByDate, valueMax, 0, -height + 40);
-            let H4_High_y = map(H4_High, valueMinByDate, valueMax, 0, -height + 40);
-            let H4_Low_y = map(H4_Low, valueMinByDate, valueMax, 0, -height + 40);
+            let H4_Open_y = map(H4_Open, valueMinByDate, valueMaxByDate, 0, -height + 40);
+            let H4_Close_y = map(H4_Close, valueMinByDate, valueMaxByDate, 0, -height + 40);
+            let H4_High_y = map(H4_High, valueMinByDate, valueMaxByDate, 0, -height + 40);
+            let H4_Low_y = map(H4_Low, valueMinByDate, valueMaxByDate, 0, -height + 40);
             
             strokeWeight(3);
             line(x + columnWidth / 4*7, height - 20 + H4_Low_y, x + columnWidth / 4*7, height - 20 + H4_High_y);
@@ -184,10 +182,10 @@ function candlestickDisplay() {
             let H1_Close = tableNewDic[dateToString_]["Close"];
             let H1_High = tableNewDic[dateToString_]["High"];
             let H1_Low =  tableNewDic[dateToString_]["Low"];
-            let H1_Open_y = map(H1_Open, valueMinByDate, valueMax, 0, -height + 40);
-            let H1_Close_y = map(H1_Close, valueMinByDate, valueMax, 0, -height + 40);
-            let H1_Low_y = map(H1_Low, valueMinByDate, valueMax, 0, -height + 40);
-            let H1_High_y = map(H1_High, valueMinByDate, valueMax, 0, -height + 40);      
+            let H1_Open_y = map(H1_Open, valueMinByDate, valueMaxByDate, 0, -height + 40);
+            let H1_Close_y = map(H1_Close, valueMinByDate, valueMaxByDate, 0, -height + 40);
+            let H1_Low_y = map(H1_Low, valueMinByDate, valueMaxByDate, 0, -height + 40);
+            let H1_High_y = map(H1_High, valueMinByDate, valueMaxByDate, 0, -height + 40);      
 
             line(x + columnWidth / 4, height - 20 + H1_Low_y, x + columnWidth / 4, height - 20 + H1_High_y);
             if (H1_Close > H1_Open)

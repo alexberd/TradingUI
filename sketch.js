@@ -14,13 +14,20 @@ increment=1
 
 let direction="increasing";
 
+let candlestickDisplayRun=true;
+
 function draw()
 {
+  // if (candlestickDisplayRun)
+  //   background(220);
+  //   candlestickDisplay();
+  //   candlestickDisplayRun=false;
+
   // console.log("Draw start");
-  background(220);
+  
   
   // console.log("Display start");
-  candlestickDisplay();
+  // candlestickDisplay();
   // console.log("Display end");
   
   
@@ -56,12 +63,16 @@ function draw()
     keyPressedLeftRight();
   }
 
-  canvasDisplay();
+  // canvasDisplay();
   // console.log("Draw end");
 }
 
+
+
 function canvasDisplay()
 {
+  background(220);
+  candlestickDisplay();
   text("framerate: "+int(getFrameRate()/10)*10,width-100,40);
 }
 
